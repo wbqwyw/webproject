@@ -5,9 +5,17 @@
     <title>登录页面</title>
 </head>
 <body>
-<form action="/login" method="get">
-    <label>用户编码：</label><input type="text" name="usercode"></input>
-    <label>用户名称：</label><input type="text" name="username"></input>
+<script>
+    function changeCode() {
+        document.getElementById("img").src = "/validatecode";
+    }
+</script>
+<form action="/login" method="post">
+    <label>用户编码：</label><input type="text" name="usercode"></input><br>
+    <label>用户名称：</label><input type="text" name="username"></input><br>
+    <label>验证码：</label><input type="text" name="validatecode"></input><img onclick="changeCode();" src="/validatecode"
+                                                                           id="img"><a
+        onclick="changeCode();">点击刷新</a><br>
     <input type="submit" name="登录">
 </form>
 </body>

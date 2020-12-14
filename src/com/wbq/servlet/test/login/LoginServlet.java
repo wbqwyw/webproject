@@ -26,15 +26,27 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String usercode = (String) req.getParameter("usercode");
         String username = (String) req.getParameter("username");
+        String validatecode = (String) req.getParameter("validatecode");
+        Cookie[] cookies = req.getCookies();
+        String cookiecode = null;
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie co : cookies) {
+                if ("validatecode".equals(co.getName())) {
+                    cookiecode = co.getValue();
+                }
+            }
+        }
         ManagerService managerService = new ManagerServiceImpl();
         Manager manager = managerService.login(Integer.parseInt(usercode));
         if (manager != null) {
-            if (manager.getUsername().equalsIgnoreCase(username)) {
+            if (manager.getUsername().equalsIgnoreCase(username) && validatecode.equalsIgnoreCase(cookiecode)) {
                 resp.getWriter().println("登录成功！");
                 Cookie cookie = new Cookie("isLogin", manager.getUsername());
                 cookie.setMaxAge(60);
                 resp.addCookie(cookie);
                 session.setAttribute("manager", manager);
+            } else if (!validatecode.equalsIgnoreCase(cookiecode)) {
+                resp.getWriter().println("验证码错误！");
             } else {
                 resp.getWriter().println("登录失败，用户信息错误！");
             }
