@@ -61,9 +61,10 @@ public class DBUtils {
         Connection con = getConnection();
         try {
             con.commit();
-            closeAll(con, null, null);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            closeAll(con, null, null);
         }
     }
 
@@ -71,9 +72,10 @@ public class DBUtils {
         Connection con = getConnection();
         try {
             con.rollback();
-            closeAll(con, null, null);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            closeAll(con, null, null);
         }
     }
 
