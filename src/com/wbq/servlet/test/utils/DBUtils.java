@@ -22,6 +22,7 @@ import java.util.Properties;
 public class DBUtils {
     public static final Properties PROPERTIES = new Properties();
     private static DataSource ds;
+    public static final ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<>();
 
     static {
         try {
@@ -36,12 +37,10 @@ public class DBUtils {
     }
 
     public static Connection getConnection() {
-        try {
-            return ds.getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
+        Connection con = null;
+        con = getConnection();
+        THREAD_LOCAL.set(con);
+        return con;
     }
 
     public static DataSource getDataSource() {
@@ -84,6 +83,7 @@ public class DBUtils {
         try {
             if (con != null) {
                 con.close();
+                THREAD_LOCAL.remove();
             }
             if (st != null) {
                 st.close();
