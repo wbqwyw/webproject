@@ -17,7 +17,13 @@ public class ManagerServiceImpl implements ManagerService {
     private ManagerDao dao = new ManagerDaoImpl();
 
     @Override
-    public Manager login(int usercode) {
-        return dao.queryManager(usercode);
+    public Manager login(int usercode, String username) {
+        Manager manager = dao.queryManager(usercode);
+        if (manager != null) {
+            if (manager.getUsername().equals(username)) {
+                return manager;
+            }
+        }
+        return null;
     }
 }

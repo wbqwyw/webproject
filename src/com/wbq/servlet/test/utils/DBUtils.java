@@ -21,8 +21,8 @@ import java.util.Properties;
  */
 public class DBUtils {
     public static final Properties PROPERTIES = new Properties();
-    private static DataSource ds;
     public static final ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<>();
+    private static DataSource ds;
 
     static {
         try {
@@ -37,9 +37,15 @@ public class DBUtils {
     }
 
     public static Connection getConnection() {
-        Connection con = null;
-        con = getConnection();
-        THREAD_LOCAL.set(con);
+        Connection con = THREAD_LOCAL.get();
+        try {
+            if (con == null) {
+                con = ds.getConnection();
+                THREAD_LOCAL.set(con);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return con;
     }
 
@@ -48,9 +54,8 @@ public class DBUtils {
     }
 
     public static void begin() {
-        Connection con = getConnection();
         try {
-            con.setAutoCommit(false);
+            getConnection().setAutoCommit(false);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -60,6 +65,7 @@ public class DBUtils {
         Connection con = getConnection();
         try {
             con.commit();
+            closeAll(con, null, null);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
