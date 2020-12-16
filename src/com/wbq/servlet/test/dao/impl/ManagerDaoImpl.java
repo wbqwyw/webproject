@@ -38,7 +38,7 @@ public class ManagerDaoImpl implements ManagerDao {
 
         List<Manager> managerList = null;
         try {
-            managerList = queryRunner.query(DBUtils.getConnection(), "select * from manager limit ?,?;", new BeanListHandler<Manager>(Manager.class), page.getPageIndex(), page.getPageSize());
+            managerList = queryRunner.query(DBUtils.getConnection(), "select * from manager limit ?,?;", new BeanListHandler<Manager>(Manager.class), page.getStartRows(), page.getPageSize());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -55,5 +55,32 @@ public class ManagerDaoImpl implements ManagerDao {
         return 0;
     }
 
+    @Override
+    public int deleteManager(int usercode) {
+        try {
+            DBUtils.begin();
+            int result = queryRunner.execute(DBUtils.getConnection(), "delete from manager where usercode =?", usercode);
+            DBUtils.commit();
+            return result;
+        } catch (SQLException throwables) {
+            DBUtils.rollback();
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
 
+    @Override
+    public int updateManager(Manager manager) {
+        try {
+            DBUtils.begin();
+            int result = queryRunner.execute(DBUtils.getConnection(), "update manager set username=? where usercode =?", manager.getUsername(), manager.getUsercode());
+            DBUtils.commit();
+            return result;
+        } catch (SQLException throwables) {
+            DBUtils.rollback();
+            throwables.printStackTrace();
+        }
+
+        return 0;
+    }
 }

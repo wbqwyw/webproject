@@ -26,4 +26,19 @@ public class ManagerServiceImpl implements ManagerService {
         }
         return null;
     }
+
+    @Override
+    public Manager queryManager(int usercode) {
+        return dao.queryManager(usercode);
+    }
+
+    @Override
+    public int deleteManager(int usercode) {
+        return dao.deleteManager(usercode);
+    }
+
+    @Override
+    public int updateManager(Manager manager) {
+        return dao.updateManager(manager);
+    }
 }

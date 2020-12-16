@@ -32,4 +32,20 @@ public interface ManagerDao {
      */
     public long selectRowCount();
 
+    /**
+     * 删除管理员
+     *
+     * @param usercode
+     * @return
+     */
+    public int deleteManager(int usercode);
+
+    /**
+     * 修改管理员
+     *
+     * @param manager
+     * @return
+     */
+    public int updateManager(Manager manager);
+
 }

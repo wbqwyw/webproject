@@ -15,8 +15,8 @@
         <tr>
             <td>${manager.usercode}</td>
             <td>${manager.getUsername()}</td>
-            <td><a href="${pageContext.request.contextPath}+deleteManager?usercode=${manager.usercode}">删除</a></td>
-            <td><a href="${pageContext.request.contextPath}+updateManager?usercode=${manager.usercode}">修改</a></td>
+            <td><a href="${pageContext.request.contextPath}deleteManager?usercode=${manager.usercode}">删除</a></td>
+            <td><a href="${pageContext.request.contextPath}showManager?usercode=${manager.usercode}">修改</a></td>
         </tr>
     </c:forEach>
 </table>

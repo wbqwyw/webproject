@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @ClassName MyFilter
@@ -36,16 +38,13 @@ public class MyFilter implements Filter {
         HttpSession session = request.getSession();
         Manager manager = (Manager) session.getAttribute("manager");
         String servletPath = request.getServletPath();
-        if (servletPath.equalsIgnoreCase("/qall")) {
-            if (manager != null) {
-                filterChain.doFilter(servletRequest, servletResponse);
-            } else {
-                response.sendRedirect("/login.html");
-            }
-        } else if (servletPath.equalsIgnoreCase("/404.html")) {
+        Set<String> incloudes = new HashSet<>();
+        incloudes.add("/login.html");
+        incloudes.add("/login");
+        if (manager != null || incloudes.contains(servletPath)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            response.sendRedirect("/404.html");
+            response.sendRedirect("/login.html");
         }
     }
 

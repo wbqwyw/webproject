@@ -49,9 +49,8 @@ public class Page {
         if (pageRows % pageSize == 0) {
             this.setTotlePage(pageRows % pageSize);
         } else {
-            this.setTotlePage(pageRows % pageSize + 1);
+            this.setTotlePage(pageRows / pageSize + 1);
         }
-
     }
 
     public Integer getTotlePage() {
