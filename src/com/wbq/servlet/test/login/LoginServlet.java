@@ -27,21 +27,16 @@ public class LoginServlet extends HttpServlet {
         String usercode = (String) req.getParameter("usercode");
         String username = (String) req.getParameter("username");
         ManagerService managerService = new ManagerServiceImpl();
-        Manager manager = managerService.login(Integer.parseInt(usercode));
+        Manager manager = managerService.login(Integer.parseInt(usercode), username);
         if (manager != null) {
-            if (manager.getUsername().equalsIgnoreCase(username)) {
-                resp.getWriter().println("登录成功！");
-                Cookie cookie = new Cookie("isLogin", manager.getUsername());
-                cookie.setMaxAge(60);
-                resp.addCookie(cookie);
-                session.setAttribute("manager", manager);
-            } else {
-                resp.getWriter().println("登录失败，用户信息错误！");
-            }
+            resp.getWriter().println("登录成功！");
+            Cookie cookie = new Cookie("isLogin", manager.getUsername());
+            cookie.setMaxAge(60);
+            resp.addCookie(cookie);
+            session.setAttribute("manager", manager);
         } else {
             resp.getWriter().println("该用户还未注册！");
         }
-
     }
 
     @Override

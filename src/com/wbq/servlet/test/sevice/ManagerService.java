@@ -9,9 +9,10 @@ public interface ManagerService {
 
     /**
      * ¹ÜÀíÔ±µÇÂ¼
+     *
      * @param usercode
      * @return
      */
-    public Manager login(int usercode);
+    public Manager login(int usercode, String username);
 
 }
