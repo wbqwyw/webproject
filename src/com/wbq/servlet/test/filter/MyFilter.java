@@ -38,13 +38,14 @@ public class MyFilter implements Filter {
         HttpSession session = request.getSession();
         Manager manager = (Manager) session.getAttribute("manager");
         String servletPath = request.getServletPath();
+
         Set<String> incloudes = new HashSet<>();
-        incloudes.add("/login.html");
-        incloudes.add("/login");
+        incloudes.add(request.getContextPath() + "/login.html");
+        incloudes.add(request.getContextPath() + "/login");
         if (manager != null || incloudes.contains(servletPath)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            response.sendRedirect("/login.html");
+            response.sendRedirect(request.getContextPath() + "/login.html");
         }
     }
 
